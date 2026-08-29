@@ -1,41 +1,29 @@
-# Compiled Lua sources
-luac.out
+local loadOk, WindUI = pcall(function()
+    local req = request or http_request
+    if req then
+        local r = req({ Url = "https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua", Method = "GET" })
+        local body = r and (r.Body or r.body)
+        if body then
+            return loadstring(body)()
+        end
+    end
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+end)
 
-# luarocks build files
-*.src.rock
-*.zip
-*.tar.gz
+if not loadOk or not WindUI then return end
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
+getgenv().WindUI = WindUI
 
-# Precompiled Headers
-*.gch
-*.pch
+local Window = WindUI:CreateWindow({
+    Title = "OMEGA HUB",
+    Subtitle = "v17 · Ugc",
+    Folder = "omegahub",
+    Icon = "rbxassetid://0",
+    NewElements = true,
+})
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
+local Tab1 = Window:Tab({ Title = "主页", Desc = "纯净空壳版", Icon = "rbxassetid://0" })
+local Sec1 = Tab1:Section({ Title = "空壳" })
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
+WindUI:Notify({ Title = "OMEGA HUB", Content = "v17 loaded" })
+print("[OMEGA] v17 loaded")
